@@ -2,13 +2,26 @@ import React from 'react';
 
 type props = {
   card: { image: string; title: string };
+  goBack: () => void;
+  goNext: () => void;
+  showFront: boolean;
+  toggle: () => void;
 };
 
-const Card = ({ card: { image, title } }: props) => {
+const Card = ({
+  card: { image, title },
+  showFront,
+  goBack,
+  goNext,
+  toggle
+}: props) => {
   return (
     <>
-      <div>Image will be: {image}</div>
-      <div>text will be: {title}</div>
+      <div onClick={toggle}>
+        {showFront ? <img src={image} alt={title} /> : <div>{title}</div>}
+      </div>
+      <button onClick={goBack}>{`<-`}</button>
+      <button onClick={goNext}>{`->`}</button>
     </>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Card from './Card';
 import { Link } from 'react-router-dom';
+import useToggle from '../../hooks/useToggle';
 const Main = () => {
   const cards = [
     {
@@ -15,12 +16,28 @@ const Main = () => {
     }
   ];
   const [current, setCurrent] = useState(0);
+  const [showFront, toggle] = useToggle(true);
+  const goNext = () => {
+    setCurrent(current + 1);
+  };
+  const goBack = () => {
+    if (current > 0) {
+      setCurrent(current - 1);
+    }
+  };
   return (
     <div>
       Main
       {current < cards.length ? (
-        <div onClick={() => setCurrent(current + 1)}>
-          <Card card={cards[current]} key={cards[current].title} />
+        <div>
+          <Card
+            toggle={toggle}
+            showFront={showFront}
+            goBack={goBack}
+            goNext={goNext}
+            card={cards[current]}
+            key={cards[current].title}
+          />
         </div>
       ) : (
         <div>
