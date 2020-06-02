@@ -27,7 +27,6 @@ const Main = () => {
   };
   return (
     <div>
-      Main
       {current < cards.length ? (
         <div>
           <Card

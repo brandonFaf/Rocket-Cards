@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
 import CreateSet from './components/Sets/CreateSet';
 import ReviewSet from './components/Sets/ReviewSet';
+import BuildSet from './components/Build';
 import Main from './components/Main/Main';
 import { createGlobalStyle } from 'styled-components';
 
@@ -58,6 +59,7 @@ function App() {
       <Switch>
         <Route path='/' exact component={Dashboard} />
         <Route path='/sets/create' component={CreateSet} />
+        <Route path='/sets/build' component={BuildSet} />
         <Route path='/sets/:id' component={ReviewSet} />
         <Route path='/main/:id' component={Main} />
       </Switch>
