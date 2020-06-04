@@ -51,6 +51,10 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+body{
+	background-color:#0a0a0a;
+	color:#fcfcfc
+}
 `;
 function App() {
   return (

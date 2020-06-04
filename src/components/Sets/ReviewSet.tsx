@@ -10,6 +10,7 @@ type props = {
 const Container = styled.div`
   display: flex;
 `;
+
 let cards: BlockProps[] = [
   {
     id: 1,
@@ -22,6 +23,11 @@ let cards: BlockProps[] = [
     img:
       'https://image.shutterstock.com/image-photo/closeup-fresh-organic-orange-fruit-600w-1726339291.jpg',
     title: 'orange'
+  },
+  {
+    id: 3,
+    img: 'https://via.placeholder.com/150',
+    title: 'add your own'
   }
 ];
 const ReviewSet = ({
@@ -31,11 +37,23 @@ const ReviewSet = ({
 }: props) => {
   const [allCards, setAllCards] = useState(cards);
   const [editingCard, setEditingCard] = useState(-1);
+  const [cardCount, setCardCount] = useState(4);
+  const addCard = () => {
+    setAllCards([
+      ...allCards,
+      {
+        id: cardCount,
+        img: 'https://via.placeholder.com/150',
+        title: 'add your own'
+      }
+    ]);
+    setCardCount(cardCount + 1);
+  };
   const edit = (c: BlockProps) => {
     setEditingCard(c.id);
   };
 
-  const c = cards.find(c => c.id === editingCard);
+  const c = allCards.find(c => c.id === editingCard);
   if (c) {
     return (
       <div>
@@ -54,13 +72,16 @@ const ReviewSet = ({
   return (
     <div>
       <Container>
-        {allCards.map(c => (
-          <div onClick={() => edit(c)} key={c.id}>
-            <Block {...c} />
-          </div>
-        ))}
+        {allCards
+          .sort((a, b) => a.id - b.id)
+          .map(c => (
+            <div onClick={() => edit(c)} key={c.id}>
+              <Block {...c} />
+            </div>
+          ))}
 
         <Link to={`/main/${id}`}>Start</Link>
+        <button onClick={addCard}>+</button>
       </Container>
     </div>
   );
