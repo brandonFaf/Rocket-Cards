@@ -37,7 +37,8 @@ export const EditCard: React.FC<Props> = ({
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     const c = allCards.find(c => c.id === editingCard);
     if (c) {
       c.title = name;
