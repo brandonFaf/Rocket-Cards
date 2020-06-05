@@ -19,13 +19,14 @@ const sets: BlockProps[] = [
     title: 'cars'
   }
 ];
-const Dashboard = () => (
+const Dashboard: React.FC<{ user: firebase.User | null }> = ({ user }) => (
   <Container>
     {sets.map(s => (
       <Link to={`/main/${s.id}`} key={s.title}>
         <Block {...s} />
       </Link>
     ))}
+    <div>Welcome {JSON.stringify(user, null, 2)}</div>
 
     <Link to='/sets/create'>Create a set</Link>
   </Container>
