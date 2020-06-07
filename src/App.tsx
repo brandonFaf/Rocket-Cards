@@ -7,7 +7,7 @@ import BuildSet from './components/Build';
 import Login from './components/Login';
 import Main from './components/Main/Main';
 import GlobalStyle from './styles';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import './data/firebaseConfig';
 
 function App() {

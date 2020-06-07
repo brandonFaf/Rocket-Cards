@@ -28,7 +28,8 @@ describe('create set', () => {
   it('should create a new deck', async done => {
     const name = 'this-is-a-test-name';
     const req = {
-      query: { name, userId: 'userId', ammount: 10 }
+      query: { name, userId: 'userId', ammount: 10 },
+      headers: { origin: 'test' }
     };
     const res = {
       json: async (message: { setId: string; result: string }) => {
@@ -39,14 +40,16 @@ describe('create set', () => {
           .get();
         expect(cards.size).toBe(10);
         done();
-      }
+      },
+      setHeader: jest.fn()
     };
     await createSet(req as any, res as any);
   }, 10000);
   it('should not allow duplicate sets by a user', async done => {
     const name = 'this-is-a-test-name';
     const req = {
-      query: { name, userId: 'userId', ammount: 10 }
+      query: { name, userId: 'userId', ammount: 10 },
+      headers: { origin: 'test' }
     };
     const res = {
       json: async (message: { setId: string; result: string }) => {
@@ -56,7 +59,8 @@ describe('create set', () => {
       },
       status: (code: number) => {
         expect(code).toBe(409);
-      }
+      },
+      setHeader: jest.fn()
     };
     await createSet(req as any, res as any);
   });
