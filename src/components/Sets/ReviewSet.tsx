@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Block, { BlockProps } from '../Shared/Block';
 import styled from 'styled-components/macro';
 import { EditCard } from './EditCard';
+import { getCardsForSet } from '../../data/firebaseCardsAPI';
 
 type props = {
   match: { params: { id: string } };
@@ -11,38 +12,26 @@ const Container = styled.div`
   display: flex;
 `;
 
-let cards: BlockProps[] = [
-  {
-    id: 1,
-    img:
-      'https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-260nw-1498042211.jpg',
-    title: 'apple'
-  },
-  {
-    id: 2,
-    img:
-      'https://image.shutterstock.com/image-photo/closeup-fresh-organic-orange-fruit-600w-1726339291.jpg',
-    title: 'orange'
-  },
-  {
-    id: 3,
-    img: 'https://via.placeholder.com/150',
-    title: 'add your own'
-  }
-];
 const ReviewSet = ({
   match: {
     params: { id }
   }
 }: props) => {
-  const [allCards, setAllCards] = useState(cards);
-  const [editingCard, setEditingCard] = useState(-1);
+  const [allCards, setAllCards] = useState<BlockProps[]>([]);
+  useEffect(() => {
+    const fetchCards = async () => {
+      const cards = await getCardsForSet(id);
+      setAllCards(cards);
+    };
+    fetchCards();
+  }, [id]);
+  const [editingCard, setEditingCard] = useState('-1');
   const [cardCount, setCardCount] = useState(4);
   const addCard = () => {
     setAllCards([
       ...allCards,
       {
-        id: cardCount,
+        id: 'new',
         img: 'https://via.placeholder.com/150',
         title: 'add your own'
       }
@@ -73,7 +62,7 @@ const ReviewSet = ({
     <div>
       <Container>
         {allCards
-          .sort((a, b) => a.id - b.id)
+          .sort((a, b) => (a.id < b.id ? 1 : -1))
           .map(c => (
             <div onClick={() => edit(c)} key={c.id}>
               <Block {...c} />

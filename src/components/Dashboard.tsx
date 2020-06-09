@@ -7,13 +7,13 @@ const Container = styled.div`
 `;
 const sets: BlockProps[] = [
   {
-    id: 1,
+    id: '1',
     img:
       'https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-260nw-1498042211.jpg',
     title: 'fruit'
   },
   {
-    id: 2,
+    id: '2',
     img:
       'https://specials-images.forbesimg.com/imageserve/5d35eacaf1176b0008974b54/960x0.jpg?cropX1=790&cropX2=5350&cropY1=784&cropY2=3349',
     title: 'cars'

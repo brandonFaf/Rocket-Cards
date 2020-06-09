@@ -17,7 +17,7 @@ const Container = styled.figure`
   }
 `;
 export interface BlockProps {
-  id: number;
+  id: string;
   img: string;
   title: string;
 }

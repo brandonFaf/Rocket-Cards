@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { BlockProps } from '../Shared/Block';
 
 interface Props {
-  editingCard: number;
-  setEditingCard: (c: number) => void;
+  editingCard: string;
+  setEditingCard: (c: string) => void;
   allCards: BlockProps[];
   setAllCards: (b: BlockProps[]) => void;
 }
@@ -24,7 +24,7 @@ export const EditCard: React.FC<Props> = ({
   };
   const deleteWord = () => {
     setAllCards(allCards.filter(c => c.id !== editingCard));
-    setEditingCard(-1);
+    setEditingCard('-1');
   };
   const selectImage = (img: string) => {
     const c = allCards.find(c => c.id === editingCard);
@@ -47,7 +47,7 @@ export const EditCard: React.FC<Props> = ({
     setMode('options');
   };
   const close = () => {
-    setEditingCard(-1);
+    setEditingCard('-1');
   };
   if (mode === 'options') {
     return (
