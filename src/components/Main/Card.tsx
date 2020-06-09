@@ -1,7 +1,8 @@
 import React from 'react';
+import { BlockProps } from '../Shared/Block';
 
 type props = {
-  card: { image: string; title: string };
+  card: BlockProps;
   goBack: () => void;
   goNext: () => void;
   showFront: boolean;
@@ -9,7 +10,7 @@ type props = {
 };
 
 const Card = ({
-  card: { image, title },
+  card: { img, title },
   showFront,
   goBack,
   goNext,
@@ -18,7 +19,7 @@ const Card = ({
   return (
     <>
       <div onClick={toggle}>
-        {showFront ? <img src={image} alt={title} /> : <div>{title}</div>}
+        {showFront ? <img src={img} alt={title} /> : <div>{title}</div>}
       </div>
       <button onClick={goBack}>{`<-`}</button>
       <button onClick={goNext}>{`->`}</button>

@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from './Card';
 import { Link } from 'react-router-dom';
 import useToggle from '../../hooks/useToggle';
-const Main = () => {
-  const cards = [
-    {
-      image:
-        'https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-260nw-1498042211.jpg',
-      title: 'apple'
-    },
-    {
-      image:
-        'https://image.shutterstock.com/image-photo/closeup-fresh-organic-orange-fruit-600w-1726339291.jpg',
-      title: 'orange'
-    }
-  ];
+import { getCardsForSet } from '../../data/firebaseCardsAPI';
+import { BlockProps } from '../Shared/Block';
+type props = {
+  match: { params: { id: string } };
+};
+const Main = ({
+  match: {
+    params: { id }
+  }
+}: props) => {
+  const [cards, setCards] = useState<BlockProps[]>([]);
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      const cards = await getCardsForSet(id);
+      setCards(cards);
+    };
+    fetchCards();
+  }, [id]);
   const [current, setCurrent] = useState(0);
   const [showFront, toggle] = useToggle(true);
   const goNext = () => {

@@ -1,35 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import Block, { BlockProps } from './Shared/Block';
+import Block from './Shared/Block';
+import { getSetsForUser } from '../data/firebaseSetsAPI';
 const Container = styled.div`
   display: flex;
 `;
-const sets: BlockProps[] = [
-  {
-    id: '1',
-    img:
-      'https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-260nw-1498042211.jpg',
-    title: 'fruit'
-  },
-  {
-    id: '2',
-    img:
-      'https://specials-images.forbesimg.com/imageserve/5d35eacaf1176b0008974b54/960x0.jpg?cropX1=790&cropX2=5350&cropY1=784&cropY2=3349',
-    title: 'cars'
-  }
-];
-const Dashboard: React.FC<{ user: firebase.User | null }> = ({ user }) => (
-  <Container>
-    {sets.map(s => (
-      <Link to={`/main/${s.id}`} key={s.title}>
-        <Block {...s} />
-      </Link>
-    ))}
-    <div>Welcome {JSON.stringify(user, null, 2)}</div>
+export interface CardSet {
+  id: string;
+  img: string;
+  name: string;
+}
+const Dashboard: React.FC<{ user: firebase.User | null }> = ({ user }) => {
+  const [sets, setSets] = useState<CardSet[]>([]);
+  useEffect(() => {
+    const fetchCards = async () => {
+      const fetchedSets = await getSetsForUser('1234');
+      setSets(fetchedSets);
+    };
+    fetchCards();
+  }, []);
+  return (
+    <Container>
+      {sets.map(s => (
+        <Link to={`/sets/${s.id}`} key={s.name}>
+          <Block id={s.id} title={s.name} img={s.img} />
+        </Link>
+      ))}
+      <div>Welcome {JSON.stringify(user, null, 2)}</div>
 
-    <Link to='/sets/create'>Create a set</Link>
-  </Container>
-);
+      <Link to='/sets/create'>Create a set</Link>
+    </Container>
+  );
+};
 
 export default Dashboard;

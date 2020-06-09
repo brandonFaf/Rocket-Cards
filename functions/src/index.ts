@@ -31,6 +31,9 @@ export const createSet = functions.https.onRequest((req, res) => {
         title: `card ${i}`,
         img: `https://via.placeholder.com/1${(i * 10) % 100}`
       };
+      if (i === 1) {
+        await newSet.update({ img: card.img });
+      }
       await cardsRef.add(card);
     }
     res.json({
