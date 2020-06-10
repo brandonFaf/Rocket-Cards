@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import Block from './Shared/Block';
 import { getSetsForUser } from '../data/firebaseSetsAPI';
+import useUser from '../hooks/useUser';
 const Container = styled.div`
   display: flex;
 `;
@@ -11,15 +12,18 @@ export interface CardSet {
   img: string;
   name: string;
 }
-const Dashboard: React.FC<{ user: firebase.User | null }> = ({ user }) => {
+const Dashboard = () => {
+  const { user } = useUser();
   const [sets, setSets] = useState<CardSet[]>([]);
   useEffect(() => {
     const fetchCards = async () => {
-      const fetchedSets = await getSetsForUser('1234');
-      setSets(fetchedSets);
+      if (user) {
+        const fetchedSets = await getSetsForUser(user.uid);
+        setSets(fetchedSets);
+      }
     };
     fetchCards();
-  }, []);
+  }, [user]);
   return (
     <Container>
       {sets.map(s => (
@@ -27,7 +31,6 @@ const Dashboard: React.FC<{ user: firebase.User | null }> = ({ user }) => {
           <Block id={s.id} title={s.name} img={s.img} />
         </Link>
       ))}
-      <div>Welcome {JSON.stringify(user, null, 2)}</div>
 
       <Link to='/sets/create'>Create a set</Link>
     </Container>

@@ -9,10 +9,11 @@ import Main from './components/Main/Main';
 import GlobalStyle from './styles';
 import firebase from 'firebase/app';
 import './data/firebaseConfig';
+import useUser from './hooks/useUser';
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<firebase.User | null>();
+  const { user, setUser } = useUser();
   useEffect(() => {
     const unregisterAuthObserver = firebase
       .auth()
@@ -27,7 +28,7 @@ function App() {
     return () => {
       unregisterAuthObserver();
     };
-  }, []);
+  }, [setUser]);
   if (loading) {
     return (
       <>
@@ -47,7 +48,7 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path='/' exact render={props => <Dashboard user={user} />} />
+        <Route path='/' exact component={Dashboard} />
         <Route path='/sets/create' component={CreateSet} />
         <Route path='/sets/build' component={BuildSet} />
         <Route path='/sets/:id' component={ReviewSet} />

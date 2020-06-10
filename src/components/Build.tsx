@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import axios from 'axios';
+import useUser from '../hooks/useUser';
 const Build: React.FC<RouteComponentProps> = ({
   history,
   location: { search }
@@ -8,10 +9,12 @@ const Build: React.FC<RouteComponentProps> = ({
   const params = new URLSearchParams(search);
   const amount = params.get('amount');
   const name = params.get('name');
+  const { user } = useUser();
+
   useEffect(() => {
     axios
       .get(
-        `https://us-central1-rocket-cards-dev.cloudfunctions.net/createSet?userId=1234&name=${name}&ammount=${amount}`
+        `https://us-central1-rocket-cards-dev.cloudfunctions.net/createSet?userId=${user?.uid}&name=${name}&ammount=${amount}`
       )
       .then(({ data }) => {
         history.push(`/sets/${data.setId}`);
@@ -21,7 +24,7 @@ const Build: React.FC<RouteComponentProps> = ({
         //maybe change this so that it doesn't navigate nad just has a loading/creating on the create page
         console.log('error:', data);
       });
-  }, [amount, history, name]);
+  }, [amount, history, name, user]);
   return (
     <div>
       Building {amount} cards of type {name}...
